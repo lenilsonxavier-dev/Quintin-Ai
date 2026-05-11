@@ -16,7 +16,7 @@ const engine = new webllm.MLCEngine();
 
 adicionarMensagem("Carregando IA...", "bot");
 
-await engine.reload("Llama-3.2-1B-Instruct-q4f16_1");
+await engine.reload("Qwen2.5-0.5B-Instruct-q4f16_1-MLC");
 
 adicionarMensagem("Olá! Sou o Candinho Lite 🌿", "bot");
 
