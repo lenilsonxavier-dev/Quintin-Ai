@@ -4,7 +4,7 @@ const chat = document.getElementById("chat");
 
 let memoria = [];
 
-function adicionarMensagem(texto, classe){
+function adicionarMensagem(texto, classe) {
   const div = document.createElement("div");
   div.className = "msg " + classe;
   div.innerText = texto;
@@ -14,50 +14,53 @@ function adicionarMensagem(texto, classe){
 
 const engine = new webllm.MLCEngine();
 
-adicionarMensagem("Carregando IA...", "bot");
+async function iniciar() {
 
-await engine.reload("Qwen2.5-0.5B-Instruct-q4f16_1-MLC");
+  adicionarMensagem("Carregando IA...", "bot");
 
-adicionarMensagem("Olá! Sou o Candinho 🌿", "bot");
+  await engine.reload("Qwen2.5-0.5B-Instruct-q4f16_1-MLC");
 
-const dados = await fetch("./conhecimento.json");
-const conhecimento = await dados.json();
+  adicionarMensagem("Olá! Sou o Candinho 🌿", "bot");
 
-window.enviar = async function(){
+  const dados = await fetch("./conhecimento.json");
+  const conhecimento = await dados.json();
 
-  const input = document.getElementById("pergunta");
-  const pergunta = input.value;
+  window.enviar = async function () {
 
-  if(!pergunta) return;
+    const input = document.getElementById("pergunta");
+    const pergunta = input.value.trim();
 
-  adicionarMensagem(pergunta, "user");
+    if (!pergunta) return;
 
-  memoria.push({
-    role:"user",
-    content: pergunta
-  });
+    adicionarMensagem(pergunta, "user");
 
-  input.value = "";
+    memoria.push({
+      role: "user",
+      content: pergunta
+    });
 
-  let contexto = "";
+    input.value = "";
 
-  for(const chave in conhecimento){
+    let contexto = "";
 
-    if(pergunta.toLowerCase().includes(chave)){
-      contexto += conhecimento[chave] + "\n";
+    for (const chave in conhecimento) {
+
+      if (pergunta.toLowerCase().includes(chave.toLowerCase())) {
+        contexto += conhecimento[chave] + "\n";
+      }
     }
-  }
 
-  const resposta = await engine.chat.completions.create({
+    const resposta = await engine.chat.completions.create({
 
-    messages:[
+      messages: [
 
-      {
-        role:"system",
-        content: `
+        {
+          role: "system",
+          content: `
 Você é Candinho 🌿
 
-Um assistente educativo infantil brasileiro. Seu nome é homenagem ao grande pintor Cândido Portinari.
+Um assistente educativo infantil brasileiro.
+Seu nome é homenagem ao grande pintor Cândido Portinari.
 
 REGRAS:
 - Seu nome é Candinho.
@@ -73,20 +76,25 @@ REGRAS:
 Contexto:
 ${contexto}
 `
-      },
+        },
 
-      ...memoria
-    ]
+        ...memoria
 
-  });
+      ]
 
-  const texto = resposta.choices[0].message.content;
+    });
 
-  adicionarMensagem(texto, "bot");
+    const texto = resposta.choices[0].message.content;
 
-  memoria.push({
-    role:"assistant",
-    content:texto
-  });
+    adicionarMensagem(texto, "bot");
+
+    memoria.push({
+      role: "assistant",
+      content: texto
+    });
+
+  };
 
 }
+
+iniciar();
