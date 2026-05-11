@@ -18,7 +18,7 @@ adicionarMensagem("Carregando IA...", "bot");
 
 await engine.reload("Qwen2.5-0.5B-Instruct-q4f16_1-MLC");
 
-adicionarMensagem("Olá! Sou o Candinho Lite 🌿", "bot");
+adicionarMensagem("Olá! Sou o Candinho 🌿);
 
 const dados = await fetch("./conhecimento.json");
 const conhecimento = await dados.json();
@@ -56,7 +56,7 @@ window.enviar = async function(){
         role:"system",
         content:`
 content:`
-Você é Candinho 🌿
+"Você é Candinho 🌿
 
 Um assistente educativo infantil brasileiro.Seu nome é homenagem ao grande pintor Cândido Portinari.
 
