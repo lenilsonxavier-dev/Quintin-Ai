@@ -22,8 +22,41 @@ async function iniciar() {
 
   adicionarMensagem("Olá! Sou o Candinho 🌿", "bot");
 
-  const dados = await fetch("./conhecimento.json");
-  const conhecimento = await dados.json();
+  const arquivos = [
+
+  "./dados/apoio_emocional.json",
+  "./dados/artes_visuais.json",
+  "./dados/artistas.json",
+  "./dados/artistas_universais.json",
+  "./dados/atividades_artisticas.json",
+  "./dados/cultura_afro_brasileira.json",
+  "./dados/cultura_indigena.json",
+  "./dados/curiosidades.json",
+  "./dados/dancas.json",
+  "./dados/festas_brasileiras.json",
+  "./dados/folclore.json",
+  "./dados/historia_arte.json",
+  "./dados/lugares_arte.json",
+  "./dados/musica.json",
+  "./dados/piadas.json",
+  "./dados/ritmos_musicais.json",
+  "./dados/teatro.json"
+
+];
+
+let conhecimento = {};
+
+for (const arquivo of arquivos) {
+
+  const resposta = await fetch(arquivo);
+  const json = await resposta.json();
+
+  conhecimento = {
+    ...conhecimento,
+    ...json
+  };
+
+}
 
   window.enviar = async function () {
 
