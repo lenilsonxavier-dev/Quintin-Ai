@@ -125,7 +125,7 @@ export async function iniciarFallback(progressCallback: (prog: { text: string; p
     { text: "🔌 Checking offline dictionary...", progress: 0.2 },
     { text: "📖 Activating spelling games...", progress: 0.5 },
     { text: "🧠 Spinning up companion vocabulary guide...", progress: 0.8 },
-    { text: "🦉 Quinti is fully awake!", progress: 1.0 }
+    { text: "✨ Quinti is fully awake!", progress: 1.0 }
   ];
 
   for (const step of steps) {
@@ -139,14 +139,14 @@ export async function iniciarFallback(progressCallback: (prog: { text: string; p
 // List of kid-friendly educational English templates for Fallback Mode
 const FALLBACK_PATTERNS = [
   "Wow! Let's practice more English terms! In Portuguese we say `{pt}`, and in English it's `{en}`! ✨ Can you speak it aloud?",
-  "That's so interesting! Did you know that `{en}` starts with the letter '{first_letter}'? How do you spell it? Let's spell together: `{spelling}`! 🦉",
+  "That's so interesting! Did you know that `{en}` starts with the letter '{first_letter}'? How do you spell it? Let's spell together: `{spelling}`! ✨",
   "Aha! `{en}` means `{pt}`! Here is a super cool phrase of the day:\n🌟 \"{example}\"\nTry to repeat it after me! ✨",
   "Lovely! I love `{en}`! Do you have a favorite `{category}`? Tell me in English! 🍎🐶"
 ];
 
 const GREETINGS_BOT = [
-  "Hello, little star! Welcome to Quinti English! Type any word to learn, or let's practice with the game cards below! 🦉✨",
-  "Hi! I am Quinti, your little owl companion! What wonderful things should we learn in English today? 🌟",
+  "Hello, little star! Welcome to Quinti English! Type any word to learn, or let's practice with the game cards below! ✨",
+  "Hi! I am Quinti, your little learning companion! What wonderful things should we learn in English today? 🌟",
   "Hello friend! Let's have fun and learn together! What's your name? 😊"
 ];
 
@@ -165,22 +165,23 @@ export async function perguntarFallback(
 
   // Dynamic responder parsing keywords
   if (query.includes("name") || query.includes("nome")) {
-    finalResponse = "🦉 My name is Quinti! I am a friendly learning owl. What is yours? ✨";
+    finalResponse = "My name is Quinti! I am a friendly learning tutor. What is yours? ✨";
   } else if (query.includes("hello") || query.includes("oi") || query.includes("hi") || query.includes("ola") || query.includes("olá")) {
     finalResponse = GREETINGS_BOT[Math.floor(Math.random() * GREETINGS_BOT.length)];
   } else if (query.includes("game") || query.includes("jogo") || query.includes("play") || query.includes("brincar")) {
-    finalResponse = "🎮 Horray! Click on any word from the categories below to hear its pronunciation, learn its meaning, and see its custom illustration card! 🦉✨";
+    finalResponse = "🎮 Horray! Click on any word from the categories below to hear its pronunciation, learn its meaning, and see its custom illustration card! ✨";
   } else if (query.includes("help") || query.includes("ajuda")) {
-    finalResponse = "🦉 Tell me any object, animal, or color, and I will translate it! Or tell me your name, and I'll say hello! ✨";
+    finalResponse = "Tell me any object, animal, or color, and I will translate it! Or tell me your name, and I'll say hello! ✨";
   } else {
     // Generate context-aware child encouragement
     const genericEncouragements = [
       "I love learning new words with you! ✨ Can you tell me: what is your favorite animal in English? Is it a 'Dog' 🐶 or a 'Cat' 🐱?",
       "That is wonderful! Let's practice spelling. Type a word you see in the cards below to unlock stars! ⭐",
-      "Excellent! You are doing fantastic! Let's read some more english words together! 🦉📖"
+      "Excellent! You are doing fantastic! Let's read some more english words together! 📖"
     ];
     finalResponse = genericEncouragements[Math.floor(Math.random() * genericEncouragements.length)];
   }
+
 
   // Stream character by character back
   const tokens = finalResponse.split(" ");
