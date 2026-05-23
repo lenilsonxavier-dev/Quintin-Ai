@@ -1,5 +1,5 @@
 {
-  "name": "Quinti AI English Tutor",
+  "name": "Quinti, Your English Friend",
   "description": "An interactive, child-friendly AI English tutor that uses WebGPU or smart fallback to help kids study vocabulary, practice speech pronunciation, and play gamified spelling quizzes.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
