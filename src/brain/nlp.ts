@@ -1,6 +1,14 @@
+// /src/brain/nlp.ts
 import { BaseWord } from "../types";
 import { GLOSSARY_DATA } from "../data/conhecimento";
 import { memory } from "./memory";
+import { CINEMA_GLOSSARY } from "../data/cinema_dict";
+import { GENERAL_DICT } from "../data/general_dict";
+
+// ... (logic for fuzzy matching and intent detection)
+
+// NOTA: A implementação completa está mais abaixo. Esta é apenas uma declaração de tipo/overload
+export async function classificarEProcessarNLP(userText: string): Promise<{ text: string; detectedWord?: BaseWord }>;
 
 // Elegant Portuguese / English vocabulary expansion maps to support dynamic offline lookups
 export const DYNAMIC_EXTENDED_DICTIONARY: Record<string, { en: string; pt: string; emoji: string; example_en: string; example_pt: string }> = {
