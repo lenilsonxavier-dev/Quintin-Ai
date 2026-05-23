@@ -1,0 +1,43 @@
+import { BaseWord } from "../types";
+
+// Vocabulário avançado baseado em Mídia (Séries e Filmes)
+// Fonte: Glossário do danilobatistaqueiroz (Gist: a251b85623cec8ef4166b18b17ea7302)
+export const CINEMA_GLOSSARY: Record<string, BaseWord> = {
+  "weird": { en: "Weird", pt: "Estranho / Esquisito", emoji: "🤨", example_en: "That is a very weird story.", example_pt: "Essa é uma história muito estranha." },
+  "definitely": { en: "Definitely", pt: "Com certeza / Definitivamente", emoji: "✅", example_en: "I am definitely going to the party.", example_pt: "Eu com certeza vou para a festa." },
+  "scared": { en: "Scared", pt: "Assustado / Com medo", emoji: "😨", example_en: "The ghost made me feel scared.", example_pt: "O fantasma me deixou assustado." },
+  "literally": { en: "Literally", pt: "Literalmente", emoji: "📖", example_en: "I am literally starving!", example_pt: "Eu estou literalmente morrendo de fome!" },
+  "awesome": { en: "Awesome", pt: "Incrível / Fantástico", emoji: "🤩", example_en: "That movie was awesome!", example_pt: "Aquele filme foi incrível!" },
+  "tough": { en: "Tough", pt: "Difícil / Resistente / Duro", emoji: "💪", example_en: "It was a tough game.", example_pt: "Foi um jogo difícil." },
+  "stuck": { en: "Stuck", pt: "Preso / Emperrado", emoji: "⛓️", example_en: "The key is stuck in the door.", example_pt: "A chave está presa na porta." },
+  "deserve": { en: "Deserve", pt: "Merecer", emoji: "🏆", example_en: "You deserve a big chocolate cake.", example_pt: "Você merece um bolo de chocolate bem grande." },
+  "crap": { en: "Crap", pt: "Porcaria / Bobagem", emoji: "💩", example_en: "Oh crap! I forgot my keys.", example_pt: "Ah porcaria! Esqueci minhas chaves." },
+  "weapon": { en: "Weapon", pt: "Arma / Armamento", emoji: "⚔️", example_en: "The knight dropped his weapon.", example_pt: "O cavaleiro deixou cair sua arma." },
+  "cop": { en: "Cop", pt: "Policial", emoji: "👮", example_en: "The cop helped the little boy.", example_pt: "O policial ajudou o menininho." },
+  "freak": { en: "Freak", pt: "Aberração / Maluco", emoji: "👹", example_en: "Don't freak out!", example_pt: "Não surte!" },
+  "jerk": { en: "Jerk", pt: "Idiota / Estúpido", emoji: "😠", example_en: "He is being such a jerk.", example_pt: "Ele está sendo um idiota." },
+  "scary": { en: "Scary", pt: "Assustador", emoji: "👻", example_en: "The dark room is scary.", example_pt: "O quarto escuro é assustador." },
+  "buddy": { en: "Buddy", pt: "Amigão / Parceiro", emoji: "👦", example_en: "Hey buddy, how are you?", example_pt: "Ei amigão, como você está?" },
+  "screw up": { en: "Screw up", pt: "Estragar / Ferrar", emoji: "🛠️", example_en: "I don't want to screw up the test.", example_pt: "Eu não quero estragar o teste." },
+  "rid": { en: "Rid", pt: "Livrar / Desembaraçar", emoji: "🚮", example_en: "I need to get rid of these old toys.", example_pt: "Eu preciso me livrar desses brinquedos velhos." },
+  "aware": { en: "Aware", pt: "Ciente / Consciente", emoji: "💡", example_en: "Are you aware of the rules?", example_pt: "Você está ciente das regras?" },
+  "pal": { en: "Pal", pt: "Camarada / Amigo", emoji: "👫", example_en: "You are a good pal.", example_pt: "Você é um bom camarada." },
+  "dumb": { en: "Dumb", pt: "Burro / Estúpido", emoji: "🥴", example_en: "That was a dumb mistake.", example_pt: "Aquele foi um erro bobo." },
+  "freaking": { en: "Freaking", pt: "Incrível / Droga (ênfase)", emoji: "💥", example_en: "This is freaking amazing!", example_pt: "Isso é incrível pra caramba!" },
+  "nowhere": { en: "Nowhere", pt: "Lugar nenhum", emoji: "📍", example_en: "I have nowhere to go.", example_pt: "Eu não tenho lugar nenhum para ir." },
+  "jealous": { en: "Jealous", pt: "Com ciúmes / Invejoso", emoji: "😒", example_en: "Don't be jealous of his new toy.", example_pt: "Não tenha ciúmes do brinquedo novo dele." },
+  "loose": { en: "Loose", pt: "Frouxo / Solto", emoji: "👗", example_en: "The dress is a bit loose.", example_pt: "O vestido está meio frouxo." },
+  "mate": { en: "Mate", pt: "Companheiro / Amigo", emoji: "🚢", example_en: "G'day mate!", example_pt: "Bom dia, parceiro!" },
+  "tip": { en: "Tip", pt: "Dica / Gorjeta", emoji: "💰", example_en: "Thanks for the tip!", example_pt: "Obrigado pela dica!" },
+  "crack": { en: "Crack", pt: "Rachadura / Quebrar", emoji: "⚡", example_en: "There is a crack in the wall.", example_pt: "Tem uma rachadura na parede." },
+  "stomach": { en: "Stomach", pt: "Estômago / Barriga", emoji: "🤢", example_en: "My stomach hurts.", example_pt: "Minha barriga dói." },
+  "airport": { en: "Airport", pt: "Aeroporto", emoji: "✈️", example_en: "The plane is at the airport.", example_pt: "O avião está no aeroporto." },
+  "closet": { en: "Closet", pt: "Armário", emoji: "👕", example_en: "Put your shirts in the closet.", example_pt: "Coloque suas camisas no armário." },
+  "gosh": { en: "Gosh", pt: "Nossa! / Céus!", emoji: "😮", example_en: "Oh my gosh, look at that!", example_pt: "Ai meu Deus, olhe aquilo!" },
+  "outta": { en: "Outta", pt: "Fora de (ênfase)", emoji: "🚪", example_en: "Get outta here!", example_pt: "Saia daqui!" },
+  "engaged": { en: "Engaged", pt: "Noivo / Ocupado", emoji: "💍", example_en: "They are engaged to be married.", example_pt: "Eles estão noivos para casar." },
+  "fancy": { en: "Fancy", pt: "Chique / Extravagante", emoji: "🎩", example_en: "That is a very fancy restaurant.", example_pt: "Aquele é um restaurante muito chique." },
+  "silly": { en: "Silly", pt: "Bobo / Idiota / Tolo", emoji: "🤡", example_en: "Stop being so silly!", example_pt: "Pare de ser tão bobinho!" },
+  "regret": { en: "Regret", pt: "Arrependimento / Lamentar", emoji: "😔", example_en: "I regret eating all the cookies.", example_pt: "Eu me arrependo de ter comido todos os biscoitos." },
+  "laughter": { en: "Laughter", pt: "Riso / Risada", emoji: "😂", example_en: "The room was full of laughter.", example_pt: "A sala estava cheia de risadas." }
+};
