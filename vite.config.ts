@@ -3,9 +3,11 @@ import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import path from 'path';
 
-export default defineConfig({
-  base: '/Quintin-Ai/',
+import { defineConfig } from 'vite'
 
+export default defineConfig({
+  base: '/Quintin-Ai/'
+})
   plugins: [
     react(),
     tailwindcss()
