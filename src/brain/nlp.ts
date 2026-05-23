@@ -1,20 +1,20 @@
-// /src/brain/nlp.ts
 import { BaseWord } from "../types";
 import { GLOSSARY_DATA } from "../data/conhecimento";
 import { memory } from "./memory";
 import { CINEMA_GLOSSARY } from "../data/cinema_dict";
 import { GENERAL_DICT } from "../data/general_dict";
 
-// ... (logic for fuzzy matching and intent detection)
-
-// NOTA: A implementação completa está mais abaixo. Esta é apenas uma declaração de tipo/overload
-export async function classificarEProcessarNLP(userText: string): Promise<{ text: string; detectedWord?: BaseWord }>;
-
 // Elegant Portuguese / English vocabulary expansion maps to support dynamic offline lookups
 export const DYNAMIC_EXTENDED_DICTIONARY: Record<string, { en: string; pt: string; emoji: string; example_en: string; example_pt: string }> = {
   "água": { en: "Water", pt: "Água", emoji: "💧", example_en: "Always drink clean cold water.", example_pt: "Beba sempre água fria e limpa." },
   "water": { en: "Water", pt: "Água", emoji: "💧", example_en: "Always drink clean cold water.", example_pt: "Beba sempre água fria e limpa." },
   
+  "maçã": { en: "Apple", pt: "Maçã", emoji: "🍎", example_en: "I eat a sweet red apple.", example_pt: "Eu como uma maçã vermelha docinha." },
+  "maca": { en: "Apple", pt: "Maçã", emoji: "🍎", example_en: "I eat a sweet red apple.", example_pt: "Eu como uma maçã vermelha docinha." },
+  "apple": { en: "Apple", pt: "Maçã", emoji: "🍎", example_en: "I eat a sweet red apple.", example_pt: "Eu como uma maçã vermelha docinha." },
+
+  "to be": { en: "To Be", pt: "Ser ou Estar", emoji: "⚡", example_en: "I am happy! (Eu estou feliz).", example_pt: "O verbo 'To Be' serve para falar quem somos ou como estamos!" },
+
   "casa": { en: "House", pt: "Casa", emoji: "🏠", example_en: "We live in a beautiful warm house.", example_pt: "Nós moramos em uma bela casa quentinha." },
   "house": { en: "House", pt: "Casa", emoji: "🏠", example_en: "We live in a beautiful warm house.", example_pt: "Nós moramos em uma bela casa quentinha." },
   
@@ -36,12 +36,6 @@ export const DYNAMIC_EXTENDED_DICTIONARY: Record<string, { en: string; pt: strin
   "brinquedo": { en: "Toy", pt: "Brinquedo", emoji: "🧸", example_en: "Let's share our toys with classmates.", example_pt: "Vamos compartilhar nossos brinquedos com os colegas." },
   "toy": { en: "Toy", pt: "Brinquedo", emoji: "🧸", example_en: "Let's share our toys with classmates.", example_pt: "Vamos compartilhar nossos brinquedos com os colegas." },
   
-  "amigo": { en: "Friend", pt: "Amigo", emoji: "🤝", example_en: "My best friend plays puzzle games with me.", example_pt: "Meu melhor amigo joga quebra-cabeças comigo." },
-  "friend": { en: "Friend", pt: "Amigo", emoji: "🤝", example_en: "My best friend plays puzzle games with me.", example_pt: "Meu melhor amigo joga quebra-cabeças comigo." },
-  
-  "amor": { en: "Love", pt: "Amor", emoji: "💖", example_en: "We love our wonderful family.", example_pt: "Nós amamos nossa maravilhosa família." },
-  "love": { en: "Love", pt: "Amor", emoji: "💖", example_en: "We love our wonderful family.", example_pt: "Nós amamos nossa maravilhosa família." },
-  
   "feliz": { en: "Happy", pt: "Feliz", emoji: "😊", example_en: "I feel very happy when I learn clean terms.", example_pt: "Eu me sinto muito feliz quando aprendo termos limpos." },
   "happy": { en: "Happy", pt: "Feliz", emoji: "😊", example_en: "I feel very happy when I learn clean terms.", example_pt: "Eu me sinto muito feliz quando aprendo termos limpos." },
   
@@ -59,13 +53,13 @@ export const DYNAMIC_EXTENDED_DICTIONARY: Record<string, { en: string; pt: strin
 };
 
 const KID_ENCOURAGEMENTS = [
-  "You are doing amazing, {name}! 🌟 What cool English words do you want to play with now?",
-  "That is so clever, {name}! 🦉 Quinti is so proud of you! Try clicking one of our category folders below to study!",
-  "Splendid! 🚀 Learning English is like finding hidden treasure stars! ⭐ Shall we check our stats or start a Quiz?",
-  "You are a superstar! 🌈 Let's read and speak out loud together! Type 'O que significa' and any word!"
+  "You are doing amazing, {name}! 🌟 Você está indo muito bem! O que mais quer aprender?",
+  "That is so clever, {name}! Quinti está orgulhoso! Tente clicar nas pastinhas de categorias!",
+  "Splendid! 🚀 Aprender inglês é como achar um tesouro! ⭐ Shall we check our stats or start a Quiz?",
+  "You are a superstar, {name}! 🌈 Vamos ler e falar juntos! Pergunte 'O que significa' ou 'Como se diz'!"
 ];
 
-// Simple Levenshtein distance parser to check similarity for child spellchecking feedback
+// Simple Levenshtein distance parser to check similarity
 export function calculateSimilarity(s1: string, s2: string): number {
   const norm1 = s1.toLowerCase().trim();
   const norm2 = s2.toLowerCase().trim();
@@ -98,13 +92,13 @@ export function calculateSimilarity(s1: string, s2: string): number {
  * Smart Client-Side NLP Classifier & Dialog Synthesizer
  */
 export async function classificarEProcessarNLP(userText: string): Promise<{ text: string; detectedWord?: BaseWord }> {
-  const text = userText.toLowerCase().trim();
+  const text = userText.toLowerCase().trim().replace(/[?.,!]/g, "");
   const rawName = memory.userName || "friend";
   
-  // Simulate tiny intellectual thinking process
+  // Simulate tiny thinking process
   await new Promise((resolve) => setTimeout(resolve, 450));
 
-  // 1. Intent Detection: Name Registration ("Meu nome é ... / Me chamo ... / I am ...")
+  // 1. Intent Detection: Name Registration
   const namePatterns = [
     /(?:meu nome é|me chamo|i am|my name is|soy|sou|meu nome e)\s+([a-zA-Záéíóúâêîôûãõç\s]{2,15})/i,
     /meu nome\s+([a-zA-Záéíóúâêîôûãõç\s]{2,15})/i
@@ -116,73 +110,119 @@ export async function classificarEProcessarNLP(userText: string): Promise<{ text
       const discoveredName = match[1].trim();
       memory.userName = discoveredName;
       return {
-        text: `🦉 Oh, hello **${discoveredName}**! 🌟 What a beautiful and bright name! Nice to meet you!\n\nI am Quinti, your little learning owl companion. I've saved your name in my stars registry! ⭐ Let's practice some English terms today? Double-click below or say "hello"!`
+        text: `Oh, hello **${discoveredName}**! 🌟 Que nome lindo e brilhante! Prazer em te conhecer!\n\nEu sou o Quinti, seu corujinha de estudos. Salvei seu nome nas minhas estrelas! ⭐ Vamos praticar inglês? Clique abaixo ou diga "hello"!`
       };
     }
   }
 
-  // 2. Intent Detection: Dynamic Translation / Dictionary Lookups ("O que é ...", "Como se diz ...")
+  // 2. Intent Detection: Dynamic Translation / Dictionary Lookups
   let targetLookup = "";
-  if (text.startsWith("o que é") || text.startsWith("o que e")) {
-    targetLookup = text.replace(/o que é|o que e/g, "").replace(/[?.,!]/g, "").trim();
-  } else if (text.includes("como se diz") || text.includes("como falar")) {
-    targetLookup = text.replace(/como se diz|como falar/g, "").replace(/em inglês|em ingles/g, "").replace(/[?.,!]/g, "").trim();
-  } else if (text.includes("meaning of") || text.includes("translate")) {
-    targetLookup = text.replace(/meaning of|translate/g, "").replace(/[?.,!]/g, "").trim();
-  } else {
-    // Check if the whole text is simply a single word present in dictionaries
-    const simpleClean = text.replace(/[?.,!]/g, "").trim();
-    if (simpleClean.split(/\s+/).length === 1) {
-      targetLookup = simpleClean;
+  
+  const lookupPatterns = [
+    /o que (?:é|e|significa|quer dizer)\s+(.+)/i,
+    /como (?:se diz|fala)\s+(.+?)(?:\s+em ingl(?:ê|e)s)?$/i,
+    /meaning of\s+(.+)/i,
+    /translate\s+(.+)/i,
+    /diga\s+(?:em português\s+)?(.+)/i,
+    /fale\s+(?:em português\s+)?(.+)/i
+  ];
+
+  for (const pattern of lookupPatterns) {
+    const match = text.match(pattern);
+    if (match && match[1]) {
+      targetLookup = match[1].trim()
+        .replace(/\s+em ingl(?:ê|e)s/gi, "")
+        .replace(/\s+em portugu(?:ê|e)s/gi, "")
+        .replace(/o verbo/gi, "")
+        .replace(/verb/gi, "")
+        .trim();
+      break;
+    }
+  }
+
+  // If no pattern matched, check if it's just a single/double word from dictionaries
+  if (!targetLookup) {
+    const words = text.split(/\s+/);
+    if (words.length <= 3) {
+      targetLookup = text;
     }
   }
 
   if (targetLookup) {
-    // A. Check GLOSSARY DATA first
+    // A. Check GLOSSARY DATA
     for (const [catName, category] of Object.entries(GLOSSARY_DATA.glossary)) {
       const match = category.words.find(
-        w => w.pt.toLowerCase() === targetLookup || w.en.toLowerCase() === targetLookup
+        w => w.pt.toLowerCase() === targetLookup || 
+             w.en.toLowerCase() === targetLookup ||
+             calculateSimilarity(w.pt, targetLookup) > 0.85 ||
+             calculateSimilarity(w.en, targetLookup) > 0.85
       );
       if (match) {
         memory.addLearnedWord(match.en);
         return {
-          text: `🦉 Look! I found it inside my **${category.title}** folder:\n\n${match.emoji} **${match.en}** means **${match.pt}**!\n\n🌟 *"${match.example_en}"*\n(${match.example_pt})\n\nCan you practice pronouncing "**${match.en}**" clearly? 🔊`,
+          text: `${match.emoji} **${match.en}** significa **${match.pt}**!\n\n🌟 *"${match.example_en}"*\n(${match.example_pt})\n\nCan you pronounce "**${match.en}**"? 🔊`,
           detectedWord: match
         };
       }
     }
 
-    // B. Check Extended Dictionary second
-    if (DYNAMIC_EXTENDED_DICTIONARY[targetLookup]) {
-      const match = DYNAMIC_EXTENDED_DICTIONARY[targetLookup];
-      memory.addLearnedWord(match.en);
-      return {
-        text: `🦉 Aha! I found this wonderful word:\n\n${match.emoji} **${match.en}** means **${match.pt}**!\n\n🌟 *"${match.example_en}"*\n(${match.example_pt})\n\nWould you like me to spelling-guide you? ⭐`,
-        detectedWord: match
-      };
+    // B. Check Extended Dictionary
+    // Fuzzy matching for dynamic dictionary too
+    for (const key in DYNAMIC_EXTENDED_DICTIONARY) {
+      if (key === targetLookup || calculateSimilarity(key, targetLookup) > 0.85) {
+        const match = DYNAMIC_EXTENDED_DICTIONARY[key];
+        memory.addLearnedWord(match.en);
+        return {
+          text: `${match.emoji} **${match.en}** significa **${match.pt}**!\n\n🌟 *"${match.example_en}"*\n(${match.example_pt})\n\nWant to practice spelling? ⭐`,
+          detectedWord: { ...match } as any
+        };
+      }
+    }
+
+    // C. Check Cinema/Media Extended Glossary (Frequency-based from Gist)
+    for (const key in CINEMA_GLOSSARY) {
+      const match = CINEMA_GLOSSARY[key];
+      if (key === targetLookup || 
+          match.en.toLowerCase() === targetLookup || 
+          match.pt.toLowerCase() === targetLookup ||
+          calculateSimilarity(key, targetLookup) > 0.85) {
+        memory.addLearnedWord(match.en);
+        return {
+          text: `${match.emoji} **${match.en}** significa **${match.pt}**!\n\n🌟 *"${match.example_en}"*\n(${match.example_pt})`,
+          detectedWord: match
+        };
+      }
+    }
+
+    // D. Check General Dictionary (Frequency-based from Kindle/GitHub)
+    for (const key in GENERAL_DICT) {
+      const match = GENERAL_DICT[key];
+      if (key === targetLookup || 
+          match.en.toLowerCase() === targetLookup || 
+          match.pt.toLowerCase() === targetLookup ||
+          calculateSimilarity(key, targetLookup) > 0.85) {
+        memory.addLearnedWord(match.en);
+        return {
+          text: `${match.emoji} **${match.en}** significa **${match.pt}**!\n\n🌟 *"${match.example_en}"*\n(${match.example_pt})`,
+          detectedWord: match
+        };
+      }
     }
   }
 
-  // 3. Intent Detection: Spelling Assistant ("Como se escreve ...", "Deletrear ...")
-  if (text.includes("como escreve") || text.includes("como se escreve") || text.includes("how to spell") || text.includes("soletre")) {
+  // 3. Intent Detection: Spelling Assistant
+  if (text.includes("escreve") || text.includes("escrever") || text.includes("how to spell") || text.includes("soletre")) {
     const spellTarget = text
-      .replace(/como escreve|como se escreve|how to spell|soletre/g, "")
-      .replace(/[?.,!]/g, "")
+      .replace(/como escreve|como se escreve|how to spell|soletre|como se escrever|como escrever/g, "")
       .trim();
 
     if (spellTarget) {
-      // Find English term
       let englishWord = spellTarget;
       let emoji = "✏️";
       
-      // Look up if they used a Portuguese word to spell
       for (const category of Object.values(GLOSSARY_DATA.glossary)) {
         const found = category.words.find(w => w.pt.toLowerCase() === spellTarget || w.en.toLowerCase() === spellTarget);
-        if (found) {
-          englishWord = found.en;
-          emoji = found.emoji;
-          break;
-        }
+        if (found) { englishWord = found.en; emoji = found.emoji; break; }
       }
       if (DYNAMIC_EXTENDED_DICTIONARY[spellTarget]) {
         englishWord = DYNAMIC_EXTENDED_DICTIONARY[spellTarget].en;
@@ -191,7 +231,7 @@ export async function classificarEProcessarNLP(userText: string): Promise<{ text
 
       const letterJoin = englishWord.toUpperCase().split("").join(" - ");
       return {
-        text: `🦉 Spelling time! ✏️ Let's write down **${englishWord}** ${emoji}:\n\n✨ **${letterJoin}** ✨\n\nTake your school pencil and copy this beautiful word! Great job, **${rawName}**! 💖`
+        text: `Spelling time! ✏️ Vamos escrever **${englishWord}** ${emoji}:\n\n✨ **${letterJoin}** ✨\n\nTake your pencil and copy this! Pegue seu lápis e copie essa palavra! 💖`
       };
     }
   }
@@ -219,7 +259,7 @@ export async function classificarEProcessarNLP(userText: string): Promise<{ text
   // 6. Compliments ("good owl", "gosto de você", "te amo", "legal")
   if (text.includes("gosto de voce") || text.includes("gosto de você") || text.includes("te amo") || text.includes("love you") || text.includes("legal") || text.includes("cool") || text.includes("engraçado")) {
     return {
-      text: `🦉 Oh, thank you! My little heart is fluttering like an owl's wings! 🦉💖 You are the most fantastic learning partner on Earth! Let's keep practicing! ✨`
+      text: `Oh, thank you! My little heart is fluttering like an owl's wings! 💖 You are the most fantastic learning partner on Earth! Let's keep practicing! ✨`
     };
   }
 
