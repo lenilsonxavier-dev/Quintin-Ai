@@ -41,53 +41,95 @@ export async function loadExternalDict() {
   }
 }
 
+// Normalizes a string by stripping HTML, removing accents/diacritics, and converting to lowercase
+function normalizeStr(str: string): string {
+  if (!str) return "";
+  return str
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "") // Strip accents
+    .replace(/<\/?[^>]+(>|$)/g, " ") // Strip HTML tags
+    .toLowerCase()
+    .trim();
+}
+
+// Cleans up a search query by removing common Portuguese prepositions/articles so phrase matching is seamless
+function cleanQuery(word: string): string {
+  let cleaned = normalizeStr(word);
+  // Strip common Portuguese/English leading prepositions and articles
+  cleaned = cleaned.replace(/^(em |de |do |da |o |a |os |as |um |uma |para |no |na |in the |the |a )\s*/gi, "").trim();
+  // Strip trailing punctuation
+  cleaned = cleaned.replace(/[.:,;()?!]+/g, "").trim();
+  return cleaned;
+}
+
+// Cleans up raw dictionary HTML output to make it super cute, clean, and professional for kids
+export function cleanPtDefinitionForDisplay(rawPt: string): string {
+  let cleaned = rawPt.replace(/<\/?[^>]+(>|$)/g, ""); // Strip HTML
+  cleaned = cleaned.replace(/\s+/g, " ").trim(); // Coalesce whitespaces
+  return cleaned;
+}
+
+// Extracts the very first noun or meaning from Portuguese definition to use inside example phrases
+function cleanFirstPtWord(rawPt: string): string {
+  let cleaned = rawPt.replace(/<\/?[^>]+(>|$)/g, " ");
+  // Remove part-of-speech markers and lists
+  cleaned = cleaned.replace(/\b(n|adj|vt|vi|adv|prep|conj|v|interj|pron|pej|coll|sl|vulg|fig|Geom|Math|Phys|Med|Ichth|Ornith|Bot|Astr)\b\s*([0-9]+)?/gi, " ");
+  // Remove leading numbers, periods or punctuation
+  cleaned = cleaned.replace(/^[0-9.:,;()'\s]+/g, "");
+  const match = cleaned.split(/[,;\.]/)[0];
+  return (match || cleaned).trim() || "coisa";
+}
+
 export function searchExternalDict(word: string): BaseWord | null {
-  const cleanWord = word.trim().toLowerCase();
+  const q = cleanQuery(word);
+  if (!q) return null;
   
   // 1. Direct English Lookup
-  if (externalDictEnToPt.has(cleanWord)) {
-    const ptTranslation = externalDictEnToPt.get(cleanWord)!;
-    const enWordCap = cleanWord.charAt(0).toUpperCase() + cleanWord.slice(1);
-    
-    // Find matching emoji dynamically to make it cute!
-    const emoji = getCuteAnimalEmoji(cleanWord);
+  if (externalDictEnToPt.has(q)) {
+    const ptTranslation = externalDictEnToPt.get(q)!;
+    const enWordCap = q.charAt(0).toUpperCase() + q.slice(1);
+    const emoji = getCuteAnimalEmoji(q);
     
     return {
       en: enWordCap,
-      pt: ptTranslation,
+      pt: cleanPtDefinitionForDisplay(ptTranslation),
       emoji,
-      example_en: `The ${cleanWord} is amazing!`,
-      example_pt: `O ${ptTranslation.toLowerCase()} é incrível!`
+      example_en: `The ${q} is amazing!`,
+      example_pt: `O ${cleanFirstPtWord(ptTranslation).toLowerCase()} é incrível!`
     };
   }
 
-  // 2. Direct Portuguese Lookup
-  if (externalDictPtToEn.has(cleanWord)) {
-    const enWord = externalDictPtToEn.get(cleanWord)!;
+  // 2. Direct Portuguese Lookup (exact matches in mapped keys)
+  if (externalDictPtToEn.has(q)) {
+    const enWord = externalDictPtToEn.get(q)!;
     const enWordCap = enWord.charAt(0).toUpperCase() + enWord.slice(1);
     const ptTranslation = externalDictEnToPt.get(enWord.toLowerCase())!;
     const emoji = getCuteAnimalEmoji(enWord.toLowerCase());
     
     return {
       en: enWordCap,
-      pt: ptTranslation,
+      pt: cleanPtDefinitionForDisplay(ptTranslation),
       emoji,
       example_en: `Look at that beautiful ${enWord.toLowerCase()}!`,
-      example_pt: `Olhe para aquele lindo ${ptTranslation.toLowerCase()}!`
+      example_pt: `Olhe para aquele lindo ${cleanFirstPtWord(ptTranslation).toLowerCase()}!`
     };
   }
 
-  // 3. Fast substring search fallback for sub-words
+  // 3. Fast accent and HTML-immune lookup fallback
   for (const [en, pt] of externalDictEnToPt.entries()) {
-    if (pt.toLowerCase() === cleanWord || pt.toLowerCase().includes(cleanWord)) {
+    const normPt = normalizeStr(pt);
+    
+    // Check with word boundaries to avoid matching sub-words like "ar" in "lar"
+    const regex = new RegExp(`\\b${q}\\b`, 'i');
+    if (regex.test(normPt)) {
       const enWordCap = en.charAt(0).toUpperCase() + en.slice(1);
       const emoji = getCuteAnimalEmoji(en);
       return {
         en: enWordCap,
-        pt,
+        pt: cleanPtDefinitionForDisplay(pt),
         emoji,
         example_en: `Learning about the ${en} is fun!`,
-        example_pt: `Aprender sobre o ${en} é divertido!`
+        example_pt: `Aprender sobre o ${cleanFirstPtWord(pt).toLowerCase()} é divertido!`
       };
     }
   }
@@ -134,6 +176,9 @@ function getCuteAnimalEmoji(enWord: string): string {
   if (word === "star") return "⭐";
   if (word === "sun") return "☀️";
   if (word === "moon") return "🌙";
+  if (word === "dinosaur") return "🦖";
+  if (word === "asteroid" || word === "meteor") return "☄️";
+  if (word === "background") return "🖼️";
   
   // Default cute sparkle for generic dictionary terms
   return "✨";
