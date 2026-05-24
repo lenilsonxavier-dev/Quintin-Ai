@@ -530,9 +530,9 @@ export default function App() {
           
           <div className="flex items-center gap-3">
             <img 
-              src="https://i.imgur.com/hZrlJFb.png" 
+              src="https://i.imgur.com/JOLSIF3.png" 
               alt="Quinti Avatar" 
-              className="w-10 h-10 object-contain transform hover:scale-110 transition-transform duration-300"
+              className="w-16 h-16 object-contain transform hover:scale-110 transition-transform duration-300"
               referrerPolicy="no-referrer"
             />
             <div>
@@ -662,12 +662,12 @@ export default function App() {
                     msg.role === "user" ? "ml-auto flex-row-reverse" : "mr-auto"
                   }`}
                 >
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 border select-none overflow-hidden ${
+                  <div className={`w-11 h-11 rounded-full flex items-center justify-center shrink-0 border select-none overflow-hidden ${
                     msg.role === "user" 
                     ? "bg-amber-100 border-amber-200 text-lg" 
                     : "bg-sky-100 border-sky-200"
                   }`}>
-                    {msg.role === "user" ? "⭐" : <img src="https://i.imgur.com/hZrlJFb.png" className="w-full h-full object-contain" referrerPolicy="no-referrer" alt="Quinti" />}
+                    {msg.role === "user" ? "⭐" : <img src="https://i.imgur.com/JOLSIF3.png" className="w-full h-full object-contain" referrerPolicy="no-referrer" alt="Quinti" />}
                   </div>
 
                   <div className="flex flex-col gap-1">
@@ -701,8 +701,8 @@ export default function App() {
                   exit={{ opacity: 0 }}
                   className="flex gap-3"
                 >
-                  <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 border bg-sky-100 border-sky-200 overflow-hidden">
-                    <img src="https://i.imgur.com/hZrlJFb.png" className="w-full h-full object-contain" referrerPolicy="no-referrer" alt="Quinti Thinking" />
+                  <div className="w-11 h-11 rounded-full flex items-center justify-center shrink-0 border bg-sky-100 border-sky-200 overflow-hidden">
+                    <img src="https://i.imgur.com/JOLSIF3.png" className="w-full h-full object-contain" referrerPolicy="no-referrer" alt="Quinti Thinking" />
                   </div>
                   <div className="bg-white border border-slate-200 text-neutral-800 px-4 py-3 rounded-2xl rounded-tl-none text-sm shadow-xs flex items-center gap-2">
                     <span className="relative flex h-2 w-2">
